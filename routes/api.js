@@ -40,8 +40,12 @@ function register(req, res) {
         return res.status(400).json({ error: 'Username must be at least 3 characters' });
     }
     
-    if (!Array.isArray(encryptedCodes) || encryptedCodes.length !== 10) {
-        return res.status(400).json({ error: 'Must provide exactly 10 encrypted codes' });
+    if (!Array.isArray(encryptedCodes) || encryptedCodes.length === 0) {
+        return res.status(400).json({ error: 'Must provide at least one encrypted code' });
+    }
+    
+    if (encryptedCodes.length > 10) {
+        return res.status(400).json({ error: 'Maximum 10 codes allowed' });
     }
     
     // Check if all codes are valid base64 strings
@@ -65,7 +69,8 @@ function register(req, res) {
     
     res.json({ 
         success: true, 
-        message: 'User registered successfully' 
+        message: 'User registered successfully',
+        totalCodes: encryptedCodes.length
     });
 }
 
@@ -116,11 +121,13 @@ function retrieve(req, res) {
     userData.usedCodes.add(unusedIndex);
     userData.lastRequest = now;
     
-    const codesRemaining = userData.encryptedCodes.length - userData.usedCodes.size;
+    const totalCodes = userData.encryptedCodes.length;
+    const codesRemaining = totalCodes - userData.usedCodes.size;
     
     res.json({ 
         encryptedCode: unusedCode,
-        codesRemaining: codesRemaining
+        codesRemaining: codesRemaining,
+        totalCodes: totalCodes
     });
 }
 

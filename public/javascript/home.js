@@ -1,4 +1,4 @@
-const API_BASE = '/api'; 
+const API_BASE = '/api'; // Replace with your server endpoint
 
 let currentTab = 'register';
 
@@ -109,18 +109,26 @@ async function register() {
         return;
     }
 
+    // Collect only non-empty codes
     const codes = [];
     for (let input of codeInputs) {
         const code = input.value.trim();
-        if (!/^\d{8}$/.test(code)) {
-            showAlert(`Code ${parseInt(input.dataset.index) + 1} must be exactly 8 digits`, 'error');
-            return;
+        if (code) {
+            if (!/^\d{8}$/.test(code)) {
+                showAlert(`Code ${parseInt(input.dataset.index) + 1} must be exactly 8 digits`, 'error');
+                return;
+            }
+            codes.push(code);
         }
-        codes.push(code);
+    }
+
+    if (codes.length === 0) {
+        showAlert('Please enter at least one backup code', 'error');
+        return;
     }
 
     // Encrypt all codes client-side
-    showAlert('Encrypting codes...', 'info');
+    showAlert(`Encrypting ${codes.length} code(s)...`, 'info');
     const encryptedCodes = [];
     for (let code of codes) {
         const encrypted = await encryptCode(code, password);
@@ -141,7 +149,7 @@ async function register() {
         const result = await response.json();
 
         if (response.ok) {
-            showAlert('Registration successful! Your codes are now securely stored.', 'success');
+            showAlert(`Registration successful! ${codes.length} code(s) securely stored.`, 'success');
             // Clear form
             document.getElementById('regUsername').value = '';
             document.getElementById('regPassword').value = '';
@@ -185,6 +193,12 @@ async function login() {
                 document.getElementById('setupScreen').classList.add('hidden');
                 document.getElementById('codeScreen').classList.remove('hidden');
                 document.getElementById('retrievedCode').textContent = decryptedCode;
+
+                // Update code counter
+                const totalCodes = result.totalCodes || 10;
+                const codesUsed = totalCodes - result.codesRemaining;
+                document.getElementById('codeHeader').textContent = `Code ${codesUsed}/${totalCodes}:`;
+                document.getElementById('codesRemainingCount').textContent = result.codesRemaining;
             } else {
                 showAlert('Incorrect password or corrupted data', 'error');
             }
