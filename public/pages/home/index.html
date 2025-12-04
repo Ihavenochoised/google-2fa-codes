@@ -1,1 +1,172 @@
-Home Page
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="/css/home.css">
+        <title>Secure 2FA Vault</title>
+    </head>
+    <body>
+        <div class="container">
+                <div class="header">
+                        <h1>🔐 Secure 2FA Vault</h1>
+                        <p>End-to-end encrypted backup code storage</p>
+                </div>
+
+                <div class="content">
+                        <div id="alertContainer"></div>
+
+                        <!-- Setup Screen -->
+                        <div id="setupScreen">
+                                <div class="tab-buttons">
+                                        <button class="tab-btn active" onclick="switchTab('register')">Register</button>
+                                        <button class="tab-btn" onclick="switchTab('login')">Login</button>
+                                        <button class="tab-btn" onclick="switchTab('reset')">Reset</button>
+                                </div>
+
+                                <!-- Register Tab -->
+                                <div id="registerTab">
+                                        <div class="warning-box">
+                                                ⚠️ <strong>Use a secure network!</strong> Your codes will be encrypted on your device before
+                                                being sent to the server.
+                                        </div>
+
+                                        <div class="form-group">
+                                                <label for="regUsername">Username</label>
+                                                <input type="text" id="regUsername" placeholder="Choose a username">
+                                        </div>
+
+                                        <div class="form-group">
+                                                <label for="regPassword">Master Password</label>
+                                                <input type="password" id="regPassword" placeholder="Create a strong password">
+                                        </div>
+
+                                        <div class="form-group">
+                                                <label>Enter Your 10 Google Backup Codes</label>
+                                                <div class="code-grid">
+                                                        <div class="code-input-box">
+                                                                <label>Code 1</label>
+                                                                <input type="text" class="backup-code" data-index="0" placeholder="00000000"
+                                                                        maxlength="8">
+                                                        </div>
+                                                        <div class="code-input-box">
+                                                                <label>Code 2</label>
+                                                                <input type="text" class="backup-code" data-index="1" placeholder="00000000"
+                                                                        maxlength="8">
+                                                        </div>
+                                                        <div class="code-input-box">
+                                                                <label>Code 3</label>
+                                                                <input type="text" class="backup-code" data-index="2" placeholder="00000000"
+                                                                        maxlength="8">
+                                                        </div>
+                                                        <div class="code-input-box">
+                                                                <label>Code 4</label>
+                                                                <input type="text" class="backup-code" data-index="3" placeholder="00000000"
+                                                                        maxlength="8">
+                                                        </div>
+                                                        <div class="code-input-box">
+                                                                <label>Code 5</label>
+                                                                <input type="text" class="backup-code" data-index="4" placeholder="00000000"
+                                                                        maxlength="8">
+                                                        </div>
+                                                        <div class="code-input-box">
+                                                                <label>Code 6</label>
+                                                                <input type="text" class="backup-code" data-index="5" placeholder="00000000"
+                                                                        maxlength="8">
+                                                        </div>
+                                                        <div class="code-input-box">
+                                                                <label>Code 7</label>
+                                                                <input type="text" class="backup-code" data-index="6" placeholder="00000000"
+                                                                        maxlength="8">
+                                                        </div>
+                                                        <div class="code-input-box">
+                                                                <label>Code 8</label>
+                                                                <input type="text" class="backup-code" data-index="7" placeholder="00000000"
+                                                                        maxlength="8">
+                                                        </div>
+                                                        <div class="code-input-box">
+                                                                <label>Code 9</label>
+                                                                <input type="text" class="backup-code" data-index="8" placeholder="00000000"
+                                                                        maxlength="8">
+                                                        </div>
+                                                        <div class="code-input-box">
+                                                                <label>Code 10</label>
+                                                                <input type="text" class="backup-code" data-index="9" placeholder="00000000"
+                                                                        maxlength="8">
+                                                        </div>
+                                                </div>
+                                        </div>
+
+                                        <button class="btn btn-primary" onclick="register()">Register & Encrypt Codes</button>
+                                </div>
+
+                                <!-- Login Tab -->
+                                <div id="loginTab" class="hidden">
+                                        <div class="info-box" style="margin-bottom: 20px;">
+                                                Enter your credentials to retrieve and decrypt your backup code. You can only retrieve one code
+                                                at a time for security.
+                                        </div>
+
+                                        <div class="form-group">
+                                                <label for="loginUsername">Username</label>
+                                                <input type="text" id="loginUsername" placeholder="Enter your username">
+                                        </div>
+
+                                        <div class="form-group">
+                                                <label for="loginPassword">Master Password</label>
+                                                <input type="password" id="loginPassword" placeholder="Enter your password">
+                                        </div>
+
+                                        <button class="btn btn-primary" onclick="login()">Retrieve Backup Code</button>
+                                </div>
+
+                                <!-- Reset Tab -->
+                                <div id="resetTab" class="hidden">
+                                        <div class="alert alert-error">
+                                                ⚠️ <strong>Warning:</strong> This action is permanent and cannot be undone!
+                                        </div>
+
+                                        <div class="info-box" style="margin-bottom: 20px;">
+                                                If you've forgotten your password, your encrypted codes cannot be recovered due to end-to-end
+                                                encryption. You can delete your account and register again with new backup codes.
+                                        </div>
+
+                                        <div class="form-group">
+                                                <label for="resetUsername">Username</label>
+                                                <input type="text" id="resetUsername" placeholder="Enter your username">
+                                        </div>
+
+                                        <div class="form-group">
+                                                <label for="confirmUsername">Confirm Username</label>
+                                                <input type="text" id="confirmUsername" placeholder="Type your username again to confirm">
+                                        </div>
+
+                                        <button class="btn btn-primary" style="background: #dc3545;" onclick="resetAccount()">Delete Account
+                                                Permanently</button>
+                                </div>
+                        </div>
+
+                        <!-- Code Display Screen -->
+                        <div id="codeScreen" class="hidden">
+                                <div class="code-display-box">
+                                        <h2>Your Backup Code</h2>
+                                        <div class="code-display" id="retrievedCode">--------</div>
+                                </div>
+
+                                <div class="alert alert-warning">
+                                        ⚠️ <strong>Security Notice:</strong> For security reasons, you cannot retrieve another code
+                                        immediately. Wait before your next request.
+                                </div>
+
+                                <div class="info-box">
+                                        <strong>Important:</strong> This code can only be used once with Google. Make sure to use it now, as
+                                        you won't be able to retrieve the same code again.
+                                </div>
+
+                                <button class="btn btn-secondary" onclick="logout()">Close</button>
+                        </div>
+                </div>
+        </div>
+        <script src="/javascript/home.js"></script>
+    </body>
+</html>
