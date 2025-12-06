@@ -24,6 +24,7 @@
 .actions .btn {
     flex: 1;
     margin-bottom: 0;
+    text-decoration: none;
 }
 
 .how-to-section {

@@ -74,3 +74,12 @@
     padding: 20px;
     border-radius: 8px;
 }
+
+/* Override button margin for forms */
+.content .btn {
+    margin-bottom: 10px;
+}
+
+.content a.btn {
+    text-decoration: none;
+}
