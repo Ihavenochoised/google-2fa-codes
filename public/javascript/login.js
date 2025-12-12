@@ -53,6 +53,7 @@ function showAlert(message, type) {
     }, 5000);
 }
 
+let response = null;
 async function login() {
     const username = document.getElementById('loginUsername').value.trim();
     const password = document.getElementById('loginPassword').value;
@@ -67,7 +68,7 @@ async function login() {
     loginBtn.textContent = 'Retrieving code...';
     
     try {
-        const response = await fetch(`${API_BASE}/retrieve`, {
+        response = response ?? await fetch(`${API_BASE}/retrieve`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ username: username })
@@ -87,6 +88,17 @@ async function login() {
                 const codesUsed = totalCodes - result.codesRemaining;
                 document.getElementById('codeHeader').textContent = `Code ${codesUsed}/${totalCodes}:`;
                 document.getElementById('codesRemainingCount').textContent = result.codesRemaining;
+
+                // Debug, delete this on next commit
+                alert(codesUsed)
+
+                response = null;
+                
+                fetch(`${API_BASE}/code-used`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ code: codesUsed })
+                })
             } else {
                 showAlert('Incorrect password or corrupted data', 'error');
             }
