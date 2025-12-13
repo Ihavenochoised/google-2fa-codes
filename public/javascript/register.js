@@ -113,7 +113,7 @@ async function register() {
         const result = await response.json();
         
         if (response.ok) {
-            showAlert(`Registration successful! ${codes.length} code(s) securely stored.`, 'success');
+            showAlert(`Registration successful! ${codes.length} code(s) securely stored. Redirecting to home...`, 'success');
             document.getElementById('regUsername').value = '';
             document.getElementById('regPassword').value = '';
             codeInputs.forEach(input => input.value = '');
