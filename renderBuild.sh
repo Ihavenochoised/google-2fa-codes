@@ -13,9 +13,9 @@ curl ifconfig.me
 # New link for better visibility
 echo ""
 
-# Give the user 1 minute to copy the IP address
-echo "⏳ You have 1 minute to copy the IP address above..."
-sleep 55
+# Give the user 3 minute to copy the IP address
+echo "⏳ You have 3 minute to copy the IP address above..."
+sleep 175
 echo "⏳ 5 seconds remaining..."
 sleep 5
 
